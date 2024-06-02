@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">YogaScan</string>
+    <string name="title">Get Started!</string>
+    <string name="desc1">Fill the details below to create your account and get started.</string>
+    <string name="signup"><u>Sign Up</u></string>
+    <string name="sign_up">Sign Up</string>
+    <string name="signin"><u>Sign In</u></string>
+    <string name="sign_in">Sign In</string>
+    <string name="have">Already have an account?</string>
+    <string name="title2">Hello! Welcome Back</string>
+    <string name="desc2">Let\'s do it right.</string>
+    <string name="donthave">Get Started!</string>
+    <string name="forgot_pass">Forgot Password?</string>
+</resources>
