@@ -11,4 +11,11 @@
     <string name="desc2">Let\'s do it right.</string>
     <string name="donthave">Get Started!</string>
     <string name="forgot_pass">Forgot Password?</string>
+    <string name="search_pose">Search Pose</string>
+    <string name="niceday">Have a nice day!</string>
+    <string name="posename">POSE NAME</string>
+    <string name="desc">Ini Deskripsi Pose</string>
+    <string name="start">START</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

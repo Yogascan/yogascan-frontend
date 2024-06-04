@@ -3,5 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="neutral_900">#121926</color>
-    <color name="primary">#9681EB</color>
+    <color name="primary">#0A5AB3</color>
+    <color name="grey">#F3F0EF</color>
+    <color name="red">#B80000</color>
 </resources>

@@ -6,4 +6,5 @@
     </style>
 
     <style name="Theme.YogaScan" parent="Base.Theme.YogaScan" />
+    <style name="ScreenBackground"><item name="android:background">@color/primary</item></style>
 </resources>
