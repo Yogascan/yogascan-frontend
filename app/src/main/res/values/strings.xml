@@ -12,10 +12,26 @@
     <string name="donthave">Get Started!</string>
     <string name="forgot_pass">Forgot Password?</string>
     <string name="search_pose">Search Pose</string>
-    <string name="niceday">Have a nice day!</string>
+    <string name="niceday">Have a nice day!✨</string>
     <string name="posename">POSE NAME</string>
-    <string name="desc">Ini Deskripsi Pose</string>
-    <string name="start">START</string>
+    <string name="desc">Description : </string>
+    <string name="desc_text">Stand on one leg, place the sole of the other foot on the inner thigh or calf (not on the knee). Raise both hands above the head and bring the palms together. Focus on one point to maintain balance. </string>
+    <string name="benefits">Benefits : </string>
+    <string name="ben_text">Improves balance, strengthens the legs, and opens the hips.</string>
+    <string name="start">Start</string>
+    <string name="searchbar_hint">Pose apa yang anda cari?</string>
+    <string name="detail">Detail Pose</string>
+    <string name="hint_username">Input your username</string>
+    <string name="error_username">Wrong username</string>
+    <string name="hint_email">Masukan email anda</string>
+    <string name="hint_password">Masukan password anda</string>
+    <string name="error_password">Password kurang dari 8 Character</string>
+    <string name="error_email">Email salah</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="favorite">Favorite Activity</string>
+    <string name="history">History Activity</string>
+    <string name="tim">Tim YogaScan</string>
+    <string name="timail">yogascan@gmail.com</string>
+    <string name="edit">Edit Profile</string>
 </resources>
