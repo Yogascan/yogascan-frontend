@@ -1,66 +1,79 @@
-package com.dicoding.yogascan.ui.home
+package com.dicoding.yogascan.ui.history
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.yogascan.R
 import com.dicoding.yogascan.ViewModelFactory
-import com.dicoding.yogascan.adapter.PoseAdapter
+import com.dicoding.yogascan.adapter.HistoryAdapter
 import com.dicoding.yogascan.data.ResultState
-import com.dicoding.yogascan.databinding.FragmentHomeBinding
+import com.dicoding.yogascan.data.response.HistoryItem
+import com.dicoding.yogascan.databinding.FragmentHistoryBinding
 
-class HomeFragment : Fragment() {
-
-    private var _binding: FragmentHomeBinding? = null
+class HistoryFragment : Fragment() {
+    private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
-    private val homeViewModel by viewModels<HomeViewModel> {
+    private val historyViewModel by viewModels<HistoryViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
-    private val username: String by lazy {
-        arguments?.getString("username") ?: ""
-    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tvuname.text = "WELCOME"
-        val poseAdapter = PoseAdapter()
+        // Setup RecyclerView
+        val historyAdapter = HistoryAdapter()
         binding.rvItemPose.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = poseAdapter
+            adapter = historyAdapter
         }
-        val poseId = "A3WvDIrObgYhlWm0znaN"
-        homeViewModel.getPoses(poseId).observe(viewLifecycleOwner) { result ->
+
+        // Observe ViewModel untuk mendapatkan data history
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        historyViewModel.historyLiveData.observe(viewLifecycleOwner, Observer { result ->
             when (result) {
                 is ResultState.Loading -> showLoading(true)
                 is ResultState.Success -> {
                     showLoading(false)
-                    poseAdapter.submitList(result.data.poses) // Extract the poses list from PoseResponse
+                    result.data?.let { historyResponse ->
+                        val historyList = historyResponse.history // Ambil list history dari response
+                        (binding.rvItemPose.adapter as? HistoryAdapter)?.submitList(historyList)
+                    }
                 }
                 is ResultState.Error -> {
                     showLoading(false)
-                    showError(result.message)
+                    showError(result.message?: "Unknown error")
                 }
             }
-        }
+        })
     }
+
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
+
     private fun showError(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
