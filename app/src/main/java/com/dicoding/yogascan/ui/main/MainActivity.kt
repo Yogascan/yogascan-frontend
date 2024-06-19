@@ -5,18 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.dicoding.yogascan.ui.favorite.FavoriteFragment
 import com.dicoding.yogascan.ui.home.HomeFragment
-<<<<<<< HEAD
 import com.dicoding.yogascan.ui.profile.ProfileFragment
 import com.dicoding.yogascan.R
 import com.dicoding.yogascan.databinding.ActivityMainBinding
 import com.dicoding.yogascan.ui.history.HistoryFragment
-=======
 import com.dicoding.yogascan.HistoryFragment
 import com.dicoding.yogascan.ProfileFragment
-import com.dicoding.yogascan.R
-
-import com.dicoding.yogascan.databinding.ActivityMainBinding
->>>>>>> c80c871 (commit)
 
 class MainActivity : AppCompatActivity() {
 
