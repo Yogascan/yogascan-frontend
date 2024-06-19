@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-<<<<<<< HEAD
     tools:context=".ui.profile.ProfileFragment">
 <ScrollView
     android:layout_width="match_parent"
@@ -57,11 +56,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgHolder" />
 
-    <TextView
-        android:id="@+id/tvEmail"
-=======
-    tools:context=".ProfileFragment">
-
     <androidx.cardview.widget.CardView
         android:id="@+id/imgHolder"
         android:layout_width="100dp"
@@ -71,7 +65,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -89,7 +82,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -102,8 +95,7 @@
         app:layout_constraintTop_toBottomOf="@id/imgHolder" />
 
     <TextView
-        android:id="@+id/gmail"
->>>>>>> c80c871 (commit)
+        android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -113,11 +105,7 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-<<<<<<< HEAD
         app:layout_constraintTop_toBottomOf="@id/tvUsername" />
-=======
-        app:layout_constraintTop_toBottomOf="@id/username" />
->>>>>>> c80c871 (commit)
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -126,11 +114,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-<<<<<<< HEAD
         app:layout_constraintTop_toBottomOf="@id/tvEmail">
-=======
-        app:layout_constraintTop_toBottomOf="@id/gmail">
->>>>>>> c80c871 (commit)
 
         <FrameLayout
             android:id="@+id/view"
@@ -146,16 +130,12 @@
             android:id="@+id/darkmode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-<<<<<<< HEAD
             android:layout_marginLeft="35dp"
             android:layout_marginTop="40dp"
             android:fontFamily="@font/inter_bold"
-=======
             android:layout_marginLeft="24dp"
             android:layout_marginTop="40dp"
-            android:fontFamily="@font/inter_bold"
             android:paddingLeft="16dp"
->>>>>>> c80c871 (commit)
             android:text="Dark Mode"
             android:textColor="@color/black"
             android:textStyle="bold"
@@ -167,11 +147,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginTop="25dp"
-<<<<<<< HEAD
             android:layout_marginRight="30dp"
-=======
             android:layout_marginRight="50dp"
->>>>>>> c80c871 (commit)
             app:track="@drawable/track" />
     </androidx.cardview.widget.CardView>
     <FrameLayout
@@ -190,10 +167,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_bold"
         android:textColor="@color/primary"
-<<<<<<< HEAD
         android:textStyle="bold"
-=======
->>>>>>> c80c871 (commit)
         android:layout_marginTop="20dp"
         android:paddingLeft="40dp"
         android:text="Delete Account"
@@ -205,10 +179,7 @@
             android:fontFamily="@font/inter_bold"
             android:textColor="@color/primary"
             android:layout_marginTop="55dp"
-<<<<<<< HEAD
             android:textStyle="bold"
-=======
->>>>>>> c80c871 (commit)
             android:paddingLeft="40dp"
             android:text="Change Password"
             android:textSize="14sp"/>
@@ -218,10 +189,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_bold"
             android:textColor="@color/red"
-<<<<<<< HEAD
             android:textStyle="bold"
-=======
->>>>>>> c80c871 (commit)
             android:layout_marginTop="90dp"
             android:paddingLeft="40dp"
             android:text="Sign Out"
@@ -241,18 +209,14 @@
             android:layout_height="wrap_content"
             android:src="@drawable/change"
             android:layout_marginTop="55dp"
-<<<<<<< HEAD
             android:layout_marginLeft="12dp"/>
-=======
             android:layout_marginLeft="16dp"/>
->>>>>>> c80c871 (commit)
         <ImageView
             android:id="@+id/img_signout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/signout"
             android:layout_marginTop="90dp"
-<<<<<<< HEAD
             android:layout_marginLeft="12dp"/>
     </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -268,41 +232,4 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
-
-    <LinearLayout
-        android:id="@+id/layout_not_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/image_popup"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:src="@drawable/logo" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_popup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_sign"
-            android:fontFamily="@font/inter_bold"
-            android:textStyle="bold"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:text="Login"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-    </LinearLayout>
-=======
-            android:layout_marginLeft="16dp"/>
-    </FrameLayout>
->>>>>>> c80c871 (commit)
 </androidx.constraintlayout.widget.ConstraintLayout>
