@@ -89,9 +89,11 @@ We did most of the work in Figma, so please check the link for more details at [
 
 After completing the low-fidelity designs, we proceeded to the high-fidelity design phase. Here, we focused on developing deeper visual details and a more interactive user experience. This phase included pages such as Home, Scan, History, and Favorite, which were revised to match the color palette and visual identity of the established YogaScan logo. Here's a glimpse of the latest UI design for the YogaScan app.
 
-![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/80c9a350-672b-4271-8d1d-e06e6ee42e45)	![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/082da806-23c4-4f8f-969a-dd8ed64c0efb)	![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/018e8d1e-21a3-4ffd-ae7e-787c0a3a3d29)	![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/ecaca81f-ecf2-4eea-948e-bad38eed4fc0)
+![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/80c9a350-672b-4271-8d1d-e06e6ee42e45)	![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/082da806-23c4-4f8f-969a-dd8ed64c0efb)	![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/018e8d1e-21a3-4ffd-ae7e-787c0a3a3d29)
 
-![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/9e094e4c-a99c-4827-8027-24bdb217925d)	![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/21b068f1-0ae4-4c54-8c24-822017ccf552)	![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/c3a060fa-6a0c-4782-b260-09ab070eec34)	![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/9a482e74-d054-4db5-8e39-e641753d97e9)	![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/3d6d9bcc-f576-486e-92ec-e4428212ad5f)
+![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/ecaca81f-ecf2-4eea-948e-bad38eed4fc0) ![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/9e094e4c-a99c-4827-8027-24bdb217925d)	![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/21b068f1-0ae4-4c54-8c24-822017ccf552)
+
+![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/c3a060fa-6a0c-4782-b260-09ab070eec34)	![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/9a482e74-d054-4db5-8e39-e641753d97e9)	![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/3d6d9bcc-f576-486e-92ec-e4428212ad5f)
 
 
 # RESOURCES
