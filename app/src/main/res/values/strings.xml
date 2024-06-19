@@ -34,10 +34,7 @@
     <string name="tim">Tim YogaScan</string>
     <string name="timail">yogascan@gmail.com</string>
     <string name="edit">Edit Profile</string>
-<<<<<<< HEAD
     <string name="length_of_password">Minimal 8 karakter</string>
     <string name="invalid_email_format">Format email tidak valid</string>
     <string name="invalid_username_format">Gunakan Huruf, Angka, dan _</string>
-=======
->>>>>>> c80c871 (commit)
 </resources>
