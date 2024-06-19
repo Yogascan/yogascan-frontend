@@ -32,14 +32,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/inter_bold"
-<<<<<<< HEAD
             android:text="Hello"
             android:textColor="@color/black"
             android:textStyle="bold"
-=======
-            android:text="Hello, Team"
-            android:textColor="@color/black"
->>>>>>> c80c871 (commit)
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/tvniceday"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,8 +81,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-
         </com.google.android.material.search.SearchView>
 
         <androidx.recyclerview.widget.RecyclerView
