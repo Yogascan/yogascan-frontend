@@ -98,5 +98,5 @@ After completing the low-fidelity designs, we proceeded to the high-fidelity des
 
 # RESOURCES
 
-Here are all the resources we used in the YogaScan app. For assets that I didn't create myself, below are the links where I obtained them :
+Here are all the resources we used in the YogaScan app :
 ![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/f8e4fdb7-357f-40b3-9bba-11da50edc16d)
