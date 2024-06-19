@@ -100,3 +100,29 @@ After completing the low-fidelity designs, we proceeded to the high-fidelity des
 
 Here are all the resources we used in the YogaScan app :
 ![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/f8e4fdb7-357f-40b3-9bba-11da50edc16d)
+
+# APPLICATION DEVELOPMENT
+In the application development part, i used Android Studio as the IDE and wrote all the codes in kotlin language.
+
+**Dependencies**
+Here are all the dependencies i use in YogaScan application :
+
+1. CameraX :
+   - implementation 'androidx.camera:camera-camera2:1.3.3'
+   - implementation 'androidx.camera:camera-lifecycle:1.3.3'
+   - implementation 'androidx.camera:camera-view:1.3.3'
+
+2. Retrofit :
+   - implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+   - implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+   - implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
+
+3. Datastore :
+   - implementation 'androidx.datastore:datastore-preferences:1.1.1'
+
+4. Kotlin Coroutines :
+   - implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+
+5. Lifecycle :
+   - implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.1'
+   - implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.1'
