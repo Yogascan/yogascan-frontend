@@ -4,6 +4,7 @@ The Mobile Development (MD) team is responsible for creating a functional Androi
 Additionally, there are supporting features such as adding favorite poses, viewing the history of performed poses, and accessing detailed information about each pose, including brief explanations and health benefits for the body.
 # LOGO
 To align with our app's goals, we intended to create a logo involving a Yoga Pose with scanning features. Ultimately, we developed two distinct logo concepts, each featuring different alternate colors, which will be voted on by our team members.
+
 ![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/562828ed-ac85-4afb-a937-99690eff833f)  ![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/c99f7589-1239-4cf1-b491-0fc2ada1db86)
 
 **Logo Deliverable**
