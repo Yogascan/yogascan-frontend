@@ -101,6 +101,11 @@ After completing the low-fidelity designs, we proceeded to the high-fidelity des
 Here are all the resources we used in the YogaScan app :
 ![image](https://github.com/Yogascan/yogascan-frontend/assets/112807546/f8e4fdb7-357f-40b3-9bba-11da50edc16d)
 
+# DATA
+
+- [USER PREFERENCE SURVEY](https://drive.google.com/drive/folders/1kqjIgZb8TxUAYqG2yAPAt5gwESuiNSYT)   
+- [DATA ASSET AND POSE](https://www.figma.com/design/bMOPTo9h0wKSH5JPiDhnaY/YogaScan?node-id=0-1)
+
 # APPLICATION DEVELOPMENT
 In the application development part, i used Android Studio as the IDE and wrote all the codes in kotlin language.
 
