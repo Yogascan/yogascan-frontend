@@ -1,25 +1,11 @@
 package com.dicoding.yogascan.ui.signup
 
-import android.app.Dialog
 import android.content.Intent
-import android.content.pm.ActivityInfo
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.DisplayMetrics
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
-import com.dicoding.yogascan.ui.signup.SignupViewModel
-import com.dicoding.yogascan.R
 import com.dicoding.yogascan.ViewModelFactory
 import com.dicoding.yogascan.data.ResultState
 import com.dicoding.yogascan.databinding.ActivitySignupBinding
@@ -34,6 +20,12 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel = getViewModel(this)
+
+        binding.signInTv.setOnClickListener {
+            val intent = Intent(this, SignInActivity::class.java)
+            startActivity(intent)
+        }
         binding.btnSignUp.setOnClickListener {
             val name = binding.username.text.toString()
             val email = binding.email.text.toString()
@@ -48,7 +40,12 @@ class SignUpActivity : AppCompatActivity() {
                 is ResultState.Loading -> showLoading(true)
                 is ResultState.Success -> {
                     showLoading(false)
-                    showAlertDialog("Signup Successful", "Welcome to the app!", null)
+                    showAlertDialog("Signup Successful", "Time To Login", ){
+                        val intent = Intent(this, SignInActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+
                 }
                 is ResultState.Error -> {
                     showLoading(false)
@@ -70,5 +67,10 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun getViewModel(appCompatActivity: AppCompatActivity) : SignupViewModel{
+        val factory = ViewModelFactory.getInstance(appCompatActivity)
+        return ViewModelProvider(appCompatActivity, factory)[SignupViewModel::class.java]
     }
 }
