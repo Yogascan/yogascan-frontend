@@ -2,22 +2,27 @@ package com.dicoding.yogascan.data.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.dicoding.yogascan.api.ApiService
 import com.dicoding.yogascan.data.LoginRequest
 import com.dicoding.yogascan.data.ResultState
 import com.dicoding.yogascan.data.SignupRequest
 import com.dicoding.yogascan.data.pref.UserPreferences
-import com.dicoding.yogascan.data.response.ProfileResponse
+import com.dicoding.yogascan.data.response.CommonUidRequestBody
+import com.dicoding.yogascan.data.response.Profile
 import com.dicoding.yogascan.data.response.SigninResponse
 import com.dicoding.yogascan.data.response.SignupResponse
+import com.dicoding.yogascan.data.response.UpdatePictureResponse
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONException
 import org.json.JSONObject
-import retrofit2.Call
 import retrofit2.HttpException
+import java.io.File
 import java.io.IOException
 
 
@@ -27,8 +32,8 @@ class UserRepository(private val apiService: ApiService, private val userPrefere
         userPreference.saveSession(user)
     }
 
-    fun getSession(): Flow<SigninResponse> {
-        return userPreference.getSession()
+    fun getSession(): LiveData<SigninResponse> {
+        return userPreference.getSession().asLiveData()
     }
 
     suspend fun logout() {
@@ -80,10 +85,11 @@ class UserRepository(private val apiService: ApiService, private val userPrefere
             }
         }
     }
-    fun getProfile(uid: String): LiveData<ResultState<ProfileResponse>> = liveData(Dispatchers.IO) {
+    fun getProfile(uid: String): LiveData<ResultState<Profile>> = liveData {
         emit(ResultState.Loading)
         try {
-            val result = apiService.getProfile(uid)
+            val commonRequestBody = CommonUidRequestBody(uid = uid)
+            val result = apiService.getProfile(commonRequestBody)
             emit(ResultState.Success(result))
         } catch (e: Exception) {
             when (e) {
@@ -96,6 +102,37 @@ class UserRepository(private val apiService: ApiService, private val userPrefere
                     emit(ResultState.Error("Network error. Please check your connection and try again."))
                 }
                 else -> {
+                    Log.e("USERREPOSITORY", e.message.toString())
+                    emit(ResultState.Error("An unknown error occurred"))
+                }
+            }
+        }
+    }
+
+    fun updateProfilePicture(image: File, uid: String) : LiveData<ResultState<UpdatePictureResponse>> = liveData {
+        emit(ResultState.Loading)
+        try {
+            val uidRequestBody = uid.toRequestBody("text/plain".toMediaType())
+            val requestImageFile = image.asRequestBody("image/jpeg".toMediaType())
+            val multipartBody = MultipartBody.Part.createFormData(
+                "profile_picture",
+                image.name,
+                requestImageFile
+            )
+            val result = apiService.setProfilePicture(uid = uidRequestBody, image = multipartBody)
+            emit(ResultState.Success(result))
+        } catch (e: Exception) {
+            when (e) {
+                is HttpException -> {
+                    val errorBody = e.response()?.errorBody()?.string()
+                    val errorMessage = extractErrorMessage(errorBody)
+                    emit(ResultState.Error(errorMessage ?: "An unknown error occurred"))
+                }
+                is IOException -> {
+                    emit(ResultState.Error("Network error. Please check your connection and try again."))
+                }
+                else -> {
+                    Log.e("USERREPOSITORY", e.message.toString())
                     emit(ResultState.Error("An unknown error occurred"))
                 }
             }
