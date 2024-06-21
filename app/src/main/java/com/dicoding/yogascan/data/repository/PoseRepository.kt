@@ -3,29 +3,33 @@ package com.dicoding.yogascan.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import com.dicoding.yogascan.api.ApiService
 import com.dicoding.yogascan.data.ResultState
+import com.dicoding.yogascan.data.pref.UserPreferences
+import com.dicoding.yogascan.data.response.CommonRequestBody
+import com.dicoding.yogascan.data.response.CommonFavoriteResponseBody
 import com.dicoding.yogascan.data.response.DetailResponse
 import com.dicoding.yogascan.data.response.FavoriteResponse
-import com.dicoding.yogascan.data.response.FavoritesItem
-import com.dicoding.yogascan.data.response.HistoryItem
+import com.dicoding.yogascan.data.response.CommonUidRequestBody
+import com.dicoding.yogascan.data.response.HistoryRequest
 import com.dicoding.yogascan.data.response.HistoryResponse
 import com.dicoding.yogascan.data.response.PoseResponse
+import com.dicoding.yogascan.data.response.PosesPredictionPostData
 import com.dicoding.yogascan.data.response.PredictionResponse
-import okhttp3.Headers
-import okhttp3.MediaType.Companion.toMediaType
+import com.dicoding.yogascan.data.response.SigninResponse
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.HttpException
-import retrofit2.Response
-import java.io.File
 
-class PoseRepository private constructor(private val apiService: ApiService) {
+class PoseRepository private constructor(private val apiService: ApiService, private val userPreference: UserPreferences) {
+
+    fun getSession(): LiveData<SigninResponse> {
+        return userPreference.getSession().asLiveData()
+    }
+
     fun getPoses(uid: String?): LiveData<ResultState<PoseResponse>> = liveData {
         emit(ResultState.Loading)
         try {
@@ -82,37 +86,38 @@ class PoseRepository private constructor(private val apiService: ApiService) {
         }
     }
 
-    suspend fun addFavoritePose(poseId: String): LiveData<ResultState<FavoriteResponse>> {
-        return liveData {
+    fun addFavoritePose(userId : String, poseId: String): LiveData<ResultState<CommonFavoriteResponseBody>> = liveData {
             emit(ResultState.Loading)
             try {
-                val favoritesItem = FavoritesItem(
-                    poseId = poseId,
-                    poseDescription = "",
-                    poseBenefits = "",
-                    poseImage = "",
-                    poseName = ""
+                val addFavoritesItem = CommonRequestBody(
+                    userId, poseId
                 )
-                apiService.postFavorite(favoritesItem)
-                emit(ResultState.Success(FavoriteResponse(listOf(favoritesItem))))
+                val response = apiService.postFavorite(addFavoritesItem)
+                emit(ResultState.Success(CommonFavoriteResponseBody(response.message)))
             } catch (e: Exception) {
                 emit(ResultState.Error("An error occurred: ${e.message}"))
             }
-        }
     }
 
-    suspend fun saveHistory(historyItem: HistoryItem) {
-        try {
-            apiService.saveHistory(historyItem)
-        } catch (e: Exception) {
-            throw e
-        }
-    }
-
-    suspend fun getHistory(uid: String?): LiveData<ResultState<HistoryResponse>> = liveData {
+    fun deleteFavoritePose(userId: String, poseId: String) : LiveData<ResultState<CommonFavoriteResponseBody>> = liveData {
         emit(ResultState.Loading)
         try {
-            val result = apiService.getHistory(uid)
+            val deleteFavoriteItem = CommonRequestBody(
+                userId, poseId
+            )
+            val response = apiService.deleteFavoritePoses(deleteFavoriteItem)
+            emit(ResultState.Success(CommonFavoriteResponseBody(response.message)))
+        } catch(e : Exception) {
+            emit(ResultState.Error("An error occurred: ${e.message}"))
+        }
+    }
+
+
+    fun getFavorite(uid: String) : LiveData<ResultState<FavoriteResponse>> = liveData {
+        emit(ResultState.Loading)
+        try {
+            val getFavorite = CommonUidRequestBody(uid = uid)
+            val result = apiService.getFavoritePoses(getFavorite)
             emitSource(MutableLiveData(ResultState.Success(result)))
         } catch (e: Exception) {
             when (e) {
@@ -132,6 +137,40 @@ class PoseRepository private constructor(private val apiService: ApiService) {
             }
         }
     }
+
+    suspend fun savePrediction(predictionPostData: PosesPredictionPostData){
+        try {
+            apiService.saveHistory(predictionPostData)
+        } catch (e: Exception){
+            throw e
+        }
+    }
+
+    fun getHistory(uid: String?): LiveData<ResultState<HistoryResponse>> = liveData {
+        emit(ResultState.Loading)
+        try {
+            val userUid = HistoryRequest(uid!!)
+            val result = apiService.getHistory(userUid)
+            emitSource(MutableLiveData(ResultState.Success(result)))
+        } catch (e: Exception) {
+            when (e) {
+                is HttpException -> {
+                    val errorBody = e.response()?.errorBody()?.string()
+                    val errorMessage = extractErrorMessage(errorBody)
+                    emit(ResultState.Error(errorMessage ?: "An unknown error occured"))
+                }
+
+                is IOException -> {
+                    emit(ResultState.Error("Network error. Please check your connection and try again."))
+                }
+
+                else -> {
+                    emit(ResultState.Error("An unknown error occured"))
+                }
+            }
+        }
+    }
+
     private fun extractErrorMessage(errorBody: String?): String? {
         return try {
             val json = JSONObject(errorBody)
@@ -144,7 +183,8 @@ class PoseRepository private constructor(private val apiService: ApiService) {
     companion object {
         fun getInstance(
             apiService: ApiService,
-        ): PoseRepository = PoseRepository(apiService)
+            userPreference: UserPreferences
+        ): PoseRepository = PoseRepository(apiService, userPreference)
 
     }
 }
