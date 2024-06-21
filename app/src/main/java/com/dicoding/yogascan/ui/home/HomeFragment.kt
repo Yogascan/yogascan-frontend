@@ -1,14 +1,10 @@
 package com.dicoding.yogascan.ui.home
 
 import android.os.Bundle
-import android.content.Intent
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,8 +12,6 @@ import com.dicoding.yogascan.ViewModelFactory
 import com.dicoding.yogascan.adapter.PoseAdapter
 import com.dicoding.yogascan.data.ResultState
 import com.dicoding.yogascan.databinding.FragmentHomeBinding
-import com.dicoding.yogascan.ui.detail.DetailActivity
-import com.dicoding.yogascan.ui.detail.DetailActivity.Companion.KEY
 
 class HomeFragment : Fragment() {
 
@@ -26,11 +20,9 @@ class HomeFragment : Fragment() {
     private val homeViewModel by viewModels<HomeViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
-
     private val username: String by lazy {
         arguments?.getString("username") ?: ""
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,7 +35,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.tvuname.text = "WELCOME"
-
         val poseAdapter = PoseAdapter()
         binding.rvItemPose.apply {
             layoutManager = LinearLayoutManager(context)
@@ -55,7 +46,6 @@ class HomeFragment : Fragment() {
                 is ResultState.Loading -> showLoading(true)
                 is ResultState.Success -> {
                     showLoading(false)
-                    Log.d("HomeFragment", "Data from API: ${result.data}")
                     poseAdapter.submitList(result.data.poses)
                 }
                 is ResultState.Error -> {
