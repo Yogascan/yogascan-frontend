@@ -2,18 +2,13 @@ package com.dicoding.yogascan.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dicoding.yogascan.data.response.HistoryItem
 import com.dicoding.yogascan.databinding.ItemPoseBinding
 import com.dicoding.yogascan.data.response.PosesItem
-import com.dicoding.yogascan.databinding.ActivityDetailBinding
-import com.dicoding.yogascan.databinding.ItemHistoryBinding
 import com.dicoding.yogascan.ui.detail.DetailActivity
 import com.dicoding.yogascan.ui.scan.ScanActivity
 
