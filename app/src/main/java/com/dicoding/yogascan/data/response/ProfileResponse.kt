@@ -13,7 +13,7 @@ data class ProfileResponse(
 
 data class Profile(
 
-	@field:SerializedName("photoProfile")
+	@field:SerializedName("profile_picture")
 	val photoProfile: String? = null,
 
 	@field:SerializedName("email")
@@ -21,4 +21,12 @@ data class Profile(
 
 	@field:SerializedName("username")
 	val username: String? = null,
+)
+
+data class UpdatePictureResponse(
+	@field:SerializedName("message")
+	val message: String,
+
+	@field:SerializedName("profile_picture")
+	val pictureUrl : String,
 )
