@@ -6,16 +6,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.dicoding.yogascan.R
 import com.dicoding.yogascan.ViewModelFactory
 import com.dicoding.yogascan.data.ResultState
 import com.dicoding.yogascan.databinding.ActivitySigninBinding
@@ -55,7 +49,6 @@ class SignInActivity : AppCompatActivity() {
         binding.btnSignIn.setOnClickListener {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
-            showLoading(true)
             viewModel.login(email, password)
         }
 
@@ -65,9 +58,9 @@ class SignInActivity : AppCompatActivity() {
         }
 
         viewModel.loginResult.observe(this, Observer { loginResult ->
-            showLoading(false)
             when (loginResult) {
                 is ResultState.Success -> {
+                    showLoading(false)
                     Toast.makeText(this, "Login success!", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -75,10 +68,12 @@ class SignInActivity : AppCompatActivity() {
                     finish()
                 }
                 is ResultState.Error -> {
+                    showLoading(false)
                     Toast.makeText(this, loginResult.message, Toast.LENGTH_SHORT).show()
                 }
                 is ResultState.Loading -> {
                     // Handle loading state if needed
+                 showLoading(true)
                 }
             }
         })
