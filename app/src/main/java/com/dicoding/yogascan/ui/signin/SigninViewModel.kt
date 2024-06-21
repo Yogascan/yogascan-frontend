@@ -20,26 +20,26 @@ class SigninViewModel(private val repository: UserRepository) : ViewModel() {
         viewModelScope.launch {
             _loginResult.value = ResultState.Loading
             try {
-                // Assuming repository.login returns LiveData<ResultState<SigninResponse>>
                 repository.login(email, password).observeForever { result ->
                     when (result) {
-                        is ResultState.Success -> _loginResult.value = ResultState.Success(result.data)
+                        is ResultState.Success -> {
+                            _loginResult.value = ResultState.Success(result.data)
+                            viewModelScope.launch {
+                                repository.saveSession(result.data)
+                            }
+                        }
                         is ResultState.Error -> {
                             _error.value = result.message
                             _loginResult.value = ResultState.Error(result.message)
                         }
-                        else -> _loginResult.value = ResultState.Error("Unknown error")
+                        is ResultState.Loading -> {
+                        }
                     }
                 }
             } catch (e: Exception) {
                 _error.value = e.message ?: "An error occurred"
                 _loginResult.value = ResultState.Error(e.message ?: "An error occurred")
             }
-        }
-    }
-    fun saveSession(user:SigninResponse) {
-        viewModelScope.launch {
-            repository.saveSession(user)
         }
     }
 }
