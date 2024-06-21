@@ -31,37 +31,10 @@
             android:textColor="@color/primary"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/img_photos"
-            app:layout_constraintTop_toBottomOf="@id/tv_accuracy"
-            tools:text="Pose Name" />
-
-        <TextView
-            android:id="@+id/tv_accuracy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/inter_bold"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/date"
-            app:layout_constraintStart_toEndOf="@+id/img_photos"
-            app:layout_constraintTop_toBottomOf="@id/tv_name"
-            android:text="Accuracy : " />
-
-        <TextView
-            android:id="@+id/tv_percent"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/date"
-            app:layout_constraintStart_toEndOf="@+id/tv_accuracy"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name"
-            tools:text="100%" />
+            tools:text="Pose Name" />
 
         <TextView
             android:id="@+id/date"
@@ -74,7 +47,7 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/img_photos"
-            app:layout_constraintTop_toBottomOf="@id/tv_accuracy" />
+            app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
