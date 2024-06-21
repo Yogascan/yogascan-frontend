@@ -16,6 +16,7 @@ object Injection {
 
     fun providePoseRepository(context: Context): PoseRepository {
         val apiService = ApiConfig.getApiService()
+        val pref = UserPreferences.getInstance(context.dataStore)
         return PoseRepository.getInstance(apiService)
     }
 }
