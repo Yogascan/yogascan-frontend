@@ -5,11 +5,16 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.util.Size
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -20,12 +25,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.dicoding.yogascan.R
 import com.dicoding.yogascan.ViewModelFactory
 import com.dicoding.yogascan.data.ResultState
 import com.dicoding.yogascan.databinding.ScanBinding
-import com.dicoding.yogascan.ui.history.HistoryFragment
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
@@ -39,8 +43,8 @@ class ScanActivity : AppCompatActivity() {
     private val viewModel by viewModels<ScanViewModel> {
         ViewModelFactory.getInstance(this)
     }
-    private val executor = Executors.newSingleThreadExecutor()
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
+    private var totalConfidence = 0.0
 
     private val REQUEST_CODE_PERMISSIONS = 1001
 
@@ -68,8 +72,9 @@ class ScanActivity : AppCompatActivity() {
                     is ResultState.Success -> {
                         showLoading(false)
                         val data = resultState.data // PredictionResponse
-                        binding.detect.text = data.data.prediction
+//                        binding.detect.text = data.data.prediction
                         binding.result.text = "${"%.2f".format(data.data.confidence * 100)}%"
+                        totalConfidence += data.data.confidence
                     }
 
                     is ResultState.Error -> {
@@ -101,7 +106,9 @@ class ScanActivity : AppCompatActivity() {
                 it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
             }
 
-            imageCapture = ImageCapture.Builder().build()
+            imageCapture = ImageCapture.Builder()
+                .setTargetResolution(Size(640, 480)) // Set a lower resolution
+                .build()
 
             try {
                 cameraProvider.unbindAll()
@@ -116,16 +123,13 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private fun bitmapToFile(bitmap: Bitmap, context: Context): File {
-        // Membuat file kosong di direktori cache aplikasi
         val filesDir = context.cacheDir
         val imageFile = File(filesDir, "image.jpg")
 
-        // Mengonversi bitmap ke byte array
         val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, stream) // Adjust compression level
         val byteArray = stream.toByteArray()
 
-        // Menulis byte array ke file image
         FileOutputStream(imageFile).use {
             it.write(byteArray)
         }
@@ -134,41 +138,50 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private fun startImageAnalysis() {
-        lifecycleScope.launch {
-            while (true) {
-                val photoFile = File(
-                    externalMediaDirs.firstOrNull(),
-                    "${System.currentTimeMillis()}.jpg"
-                )
-                val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+        val poseAnalysisJob = Job()
+        val poseId = intent.getStringExtra(KEY)
+        viewModel.getSession().observe(this){
+            lifecycleScope.launch(poseAnalysisJob + Dispatchers.IO){
+                while (true) {
+                    val photoFile = File(
+                        externalMediaDirs.firstOrNull(),
+                        "${System.currentTimeMillis()}.jpg"
+                    )
+                    val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
-                imageCapture.takePicture(
-                    outputOptions,
-                    ContextCompat.getMainExecutor(this@ScanActivity),
-                    object : ImageCapture.OnImageSavedCallback {
-                        override fun onError(exc: ImageCaptureException) {
-                            Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
-                        }
+                    imageCapture.takePicture(
+                        outputOptions,
+                        ContextCompat.getMainExecutor(this@ScanActivity),
+                        object : ImageCapture.OnImageSavedCallback {
+                            override fun onError(exc: ImageCaptureException) {
+                                Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+                            }
 
-                        override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                            lifecycleScope.launch {
-                                val bitmap = photoFile.toBitmap()
-                                photoFile.delete()
+                            @RequiresApi(Build.VERSION_CODES.O)
+                            override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                                lifecycleScope.launch {
+                                    val bitmap = photoFile.toBitmap()
+                                    photoFile.delete()
 
-                                // Mengonversi bitmap ke file
-                                val imageFile = bitmapToFile(bitmap, applicationContext)
-
-                                // Memanggil viewModel.postPrediction dengan file yang telah dikonversi
-                                viewModel.postPrediction(imageFile)
+                                    val imageFile = bitmapToFile(bitmap, applicationContext)
+                                    Log.e("UID", it.uid)
+                                    viewModel.postPrediction(imageFile, it.uid, poseId!!)
+                                }
                             }
                         }
+                    )
+                    withContext(Dispatchers.IO) {
+                        Thread.sleep(5000)
                     }
-                )
-                withContext(Dispatchers.IO) {
-                    Thread.sleep(5000) // Adjust the interval as needed
                 }
             }
         }
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            poseAnalysisJob.cancel()
+            Toast.makeText(this, "End of session", Toast.LENGTH_SHORT).show()
+            finish()
+        }, 30000)
     }
 
     private fun File.toBitmap(): Bitmap {
@@ -197,7 +210,6 @@ class ScanActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "ScanActivity"
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         const val KEY = "key"
         const val IMAGE = "image"
     }
