@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -20,7 +21,6 @@ class DetailActivity : AppCompatActivity() {
     private var _binding: ActivityDetailBinding? = null
     private val binding get() = _binding!!
 
-    private var currentImageUri: Uri? = null
     private val viewModel by viewModels<DetailViewModel> {
         ViewModelFactory.getInstance(this)
     }
@@ -29,8 +29,7 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
+        
         val id = intent.getStringExtra(KEY)
 
         val toolbar: Toolbar = binding.topAppBar
@@ -48,10 +47,53 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun getData(id: String) {
+        viewModel.getSession().observe(this){userData ->
+            val uid = userData.uid
+            viewModel.getUserFavorites(uid).observe(this){result ->
+                when(result){
+                    is ResultState.Success -> {
+                        showLoading(false)
+
+                        binding.favToggle.isChecked = result.data.favorites.any { posesItem ->
+                            posesItem.poseId == id
+                        }
+
+                        binding.favToggle.setOnCheckedChangeListener { _, isChecked ->
+                            if (isChecked) {
+                                viewModel.addFavoritePose(uid, id).observe(this){ result ->
+                                    when(result){
+                                        is ResultState.Success -> showResponse(result.data.message)
+                                        is ResultState.Error -> {
+                                            showResponse(result.message)
+                                            binding.favToggle.isChecked = false
+                                        }
+                                        is ResultState.Loading -> Log.d("DETAIL", "loading.....")
+                                    }
+                                }
+                            } else {
+                                viewModel.deleteUserFavorite(uid, id).observe(this){result ->
+                                    when(result){
+                                        is ResultState.Success -> showResponse(result.data.message)
+                                        is ResultState.Error -> {
+                                            showResponse(result.message)
+                                            binding.favToggle.isChecked = true
+                                        }
+                                        is ResultState.Loading -> Log.d("DETAIL", "loading.....")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    is ResultState.Error -> {
+                        showLoading(false)
+                    }
+                    ResultState.Loading -> showLoading(true)
+                }
+            }
+        }
         viewModel.getDetailPose(id).observe(this) { result ->
             when (result) {
                 is ResultState.Loading -> {
-                    // Tindakan yang dilakukan saat sedang memuat
                     showLoading(true)
                 }
 
@@ -88,6 +130,8 @@ class DetailActivity : AppCompatActivity() {
         binding.benText.text = poseBenefits
         Glide.with(this).load(poseImage).into(binding.imgPose)
 
+        binding.favToggle.setOnClickListener {  }
+
 
         binding.btnStart.setOnClickListener {
             val context = binding.btnStart.context
@@ -102,6 +146,10 @@ class DetailActivity : AppCompatActivity() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
+    private fun showResponse(message: String){
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
     private fun showError(message: String) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
@@ -113,7 +161,5 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val KEY = "key"
-        const val IMAGE = "image"
-        private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
     }
 }
