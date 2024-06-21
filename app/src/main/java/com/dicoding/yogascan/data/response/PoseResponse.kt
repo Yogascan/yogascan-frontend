@@ -8,6 +8,20 @@ data class PoseResponse(
 	val poses: List<PosesItem>
 )
 
+data class PosesPredictionPostData(
+	@field:SerializedName("uid")
+	val uid: String,
+
+	@field:SerializedName("pose_id")
+	val poseId: String,
+
+	@field:SerializedName("date")
+	val date: String,
+
+	@field:SerializedName("result")
+	val result: Any,
+)
+
 data class PosesItem(
 
 	@field:SerializedName("pose_description")
