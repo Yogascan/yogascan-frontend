@@ -8,10 +8,15 @@ data class HistoryResponse(
 	val history: List<HistoryItem>
 )
 
+data class HistoryRequest(val uid: String)
+
 data class HistoryItem(
 
 	@field:SerializedName("date")
 	val date: String,
+
+	@field:SerializedName("uid")
+	val uid: String,
 
 	@field:SerializedName("result")
 	val result: Any,
